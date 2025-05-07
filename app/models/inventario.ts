@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
-export default class Historico extends BaseModel {
+export default class Inventario extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
@@ -21,5 +21,12 @@ export default class Historico extends BaseModel {
   public min_stock: number
 
   @column()
-  public u_m: string
+  public unidad_medida: string
+
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
 }
+
