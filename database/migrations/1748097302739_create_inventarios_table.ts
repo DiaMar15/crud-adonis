@@ -1,4 +1,5 @@
-import {BaseSchema} from '@adonisjs/lucid/schema'
+import { BaseSchema } from '@adonisjs/lucid/schema'
+
 export default class extends BaseSchema {
   protected tableName = 'inventarios'
 
@@ -11,8 +12,8 @@ export default class extends BaseSchema {
       table.integer('stock').notNullable()
       table.integer('min_stock').notNullable()
       table.string('unidad_medida').notNullable()
-      table.timestamp('created_at')
-      table.timestamp('updated_at')
+      table.timestamp('created_at').notNullable()
+      table.timestamp('updated_at').nullable()
     })
   }
 

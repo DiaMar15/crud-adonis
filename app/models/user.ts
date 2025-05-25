@@ -1,9 +1,11 @@
 import { DateTime } from 'luxon'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import TipoDocumento from './tipo_documento.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['correo'],
@@ -11,11 +13,27 @@ const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
 })
 
 export default class User extends compose(BaseModel, AuthFinder) {
+  public static table = 'user'
   @column({ isPrimary: true })
   declare id: number
 
   @column()
-  declare full_Name: string | null
+  declare nombre: string
+
+  @column()
+  declare apellido: string
+
+
+  @column()
+  declare tipo_documento_id: number
+
+  @belongsTo(() => TipoDocumento, {
+    foreignKey: 't_id',
+  })
+  declare tipos_documentos: BelongsTo<typeof TipoDocumento>
+
+  @column()
+  declare numero_documento: string
 
   @column()
   declare correo: string
@@ -23,11 +41,14 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column({ serializeAs: null })
   declare password: string
 
+  @column()
+  declare numero_telefono: string
+
   @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
+  declare created_at: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
+  declare updated_at: DateTime | null
 
   static accessTokens = DbAccessTokensProvider.forModel(User, {
     expiresIn: '30 days',
