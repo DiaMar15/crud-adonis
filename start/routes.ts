@@ -14,6 +14,7 @@ import { middleware } from '#start/kernel'
 const AuthController = () => import('#controllers/auth_controller')
 const InventoriesController = () => import('#controllers/inventarios_controller')
 const ProductosController = () => import('#controllers/productos_controller')
+const RecepcionesController = () => import('#controllers/recepcions_controller')
 
 router.get('/', async () => {
   return {
@@ -86,3 +87,31 @@ router.delete('/productos/:id', [ProductosController, 'destroy']).use(
     guards: ['api'],
   })
 )
+
+// Rutas CRUD + PATCH para Recepciones
+router.get('/recepcion', [RecepcionesController, 'list']).use(
+  middleware.auth({
+    guards: ['api'],
+  })
+)
+router.post('/recepcion', [RecepcionesController, 'create']).use(
+  middleware.auth({
+    guards: ['api'],
+  })
+)
+router.get('/recepcion/:id', [RecepcionesController, 'get']).use(
+  middleware.auth({
+    guards: ['api'],
+  })
+)
+router.put('/recepcion/:id', [RecepcionesController, 'update']).use(
+  middleware.auth({
+    guards: ['api'],
+  })
+)
+router.patch('/recepcion/:id', [RecepcionesController, 'patch']).use(
+  middleware.auth({
+    guards: ['api'],
+  })
+)
+router.delete('/recepcion/:id', [RecepcionesController, 'destroy'])
